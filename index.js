@@ -36,7 +36,7 @@ app.post('/rooms', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-    console.log('connection');
+
     socket.on('joinRoom', (room) => {
         socket.join(room);
         socket.emit('existingRoomMessages', rooms[room] || []);
