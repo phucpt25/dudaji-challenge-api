@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const { Server } = require("socket.io")
+const port = process.env.PORT || 3000;
 
 const app = express();
 const server = http.createServer(app);
@@ -12,6 +13,9 @@ const io = new Server(server, {
         methods: ["GET", "POST"],
     }
 })
+app.use(cors({
+    origin: ['https://dudaji-challenge.vercel.app', 'http://localhost:3000'], // Update with your frontend URL and localhost
+}));
 
 app.use(cors());
 app.use(express.json());
@@ -54,4 +58,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(5001);
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+});
