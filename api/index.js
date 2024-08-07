@@ -7,14 +7,14 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: ['https://dudaji-challenge.vercel.app', 'http://localhost:3000'],
+      origin: '*',
       methods: ['GET', 'POST']
     }
 });
 
 app.use(express.json());
 app.use(cors({
-    origin: ['https://dudaji-challenge.vercel.app', 'http://localhost:3000'],
+    origin: '*',
 }));
 
 let rooms = {};
