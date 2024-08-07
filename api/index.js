@@ -1,18 +1,12 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
-const { Server } = require("socket.io")
-const port = process.env.PORT || 3000;
+const { socketIo } = require("socket.io")
 
 const app = express();
 const server = http.createServer(app);
-const baseUrl = "http://localhost:3000"
-const io = new Server(server, {
-    cors: {
-        origin: baseUrl,
-        methods: ["GET", "POST"],
-    }
-})
+const io = socketIo(server);
+
 app.use(cors({
     origin: ['https://dudaji-challenge.vercel.app', 'http://localhost:3000'], // Update with your frontend URL and localhost
 }));
