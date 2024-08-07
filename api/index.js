@@ -1,18 +1,21 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
-const { socketIo } = require("socket.io")
+const socketIo = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+    cors: {
+        origin: ['https://dudaji-challenge.vercel.app', 'http://localhost:3000'],
+      methods: ['GET', 'POST']
+    }
+});
 
-app.use(cors({
-    origin: ['https://dudaji-challenge.vercel.app', 'http://localhost:3000'], // Update with your frontend URL and localhost
-}));
-
-app.use(cors());
 app.use(express.json());
+app.use(cors({
+    origin: ['https://dudaji-challenge.vercel.app', 'http://localhost:3000'],
+}));
 
 let rooms = {};
 
@@ -33,7 +36,7 @@ app.post('/rooms', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-
+    console.log('connection');
     socket.on('joinRoom', (room) => {
         socket.join(room);
         socket.emit('existingRoomMessages', rooms[room] || []);
@@ -52,4 +55,7 @@ io.on('connection', (socket) => {
     });
 });
 
-module.exports = app;
+const port = process.env.PORT || 5001;
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
